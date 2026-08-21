@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>連打ゲーム</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #fff0f5;
+        }
+        #clickBtn {
+            padding: 20px 40px;
+            font-size: 24px;
+            cursor: pointer;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
+        #clickBtn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>5秒間連打ゲーム！</h1>
+    <p>「スタート」を押して、ボタンをできるだけたくさん押してね！</p>
+    
+    <p style="font-size: 20px;">残り時間: <span id="timer">5</span>秒</p>
+    <p style="font-size: 24px; font-weight: bold;">スコア: <span id="score">0</span>回</p>
+    
+    <button id="clickBtn" onclick="startGame()" style="display: block; margin: 20px auto;">スタート！</button>
+
+    <script>
+        let score = 0;
+        let timeLeft = 5;
+        let playing = false;
+        let timerId = null;
+
+        function startGame() {
+            if (playing) {
+                // プレイ中はクリック数を増やす
+                score++;
+                document.getElementById('score').textContent = score;
+                return;
+            }
+
+            // ゲーム開始の初期化
+            score = 1;
+            timeLeft = 5;
+            playing = true;
+            document.getElementById('score').textContent = score;
+            document.getElementById('timer').textContent = timeLeft;
+            
+            const btn = document.getElementById('clickBtn');
+            btn.textContent = "連打！連打！";
+            btn.style.backgroundColor = "#ff4500";
+
+            // 1秒ごとのカウントダウン
+            timerId = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerId);
+                    playing = false;
+                    btn.textContent = "もう一度遊ぶ";
+                    btn.style.backgroundColor = "#ff69b4";
+                    alert(`ゲーム終了！スコアは ${score} 回でした！`);
+                }
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
